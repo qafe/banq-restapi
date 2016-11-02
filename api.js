@@ -41,6 +41,48 @@ server.get('/users/:id', function(req, res, next) {
     return next();
 });
 
+/* fix account data when a new transaction is added */
+server.post('/transactions', function(req, res, next) {
+    if(!req.body.fromAccount && !req.body.toAccount) {
+        return res.sendStatus(400);
+    }
+
+    if(req.body.fromAccount != req.user.id && req.body.toAccount != req.user.id) {
+        return res.sendStatus(401);
+    }
+    var amountToTransfer = req.body.amount;
+
+    var from = router.db
+        .get('accounts')
+        .find({"id": req.body.fromAccount})
+        .value();
+    var fromBalance = from.balance;
+
+    var to = router.db
+        .get('accounts')
+        .find({"id": req.body.toAccount})
+        .value();
+
+    var toBalance = to.balance;
+
+    if(!toBalance && !fromBalance) {
+        return res.sendStatus(400);
+    }
+
+    var fromAccount = router.db
+        .get('accounts')
+        .find({"id": req.body.fromAccount})
+        .assign({ "balance": toBalance + amountToTransfer}).value();
+
+    var toAccount = router.db
+        .get('accounts')
+        .find({"id": req.body.toAccount})
+        .assign({ "balance": fromBalance - amountToTransfer}).value();
+
+    console.log(fromAccount, toAccount);
+
+    return next();
+});
 
 server.use(router);
 server.listen(3000, function () {

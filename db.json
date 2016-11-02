@@ -10,17 +10,13 @@
       "id": 2,
       "name": "GF Savings account",
       "number": "NL22BANQ0102232698",
-      "balance": 800
+      "balance": 1000
     },
     {
       "id": 3,
       "name": "Koen's Account",
       "number": "NL22BANQ0102232698",
-      "balance": 600
-    },
-    {
-      "name": "Blaat",
-      "id": 4
+      "balance": 1000
     }
   ],
   "users": [
@@ -29,7 +25,6 @@
       "firstName": "Bram",
       "lastName": "Dekker",
       "emailaddress": "bdekker@qualogy.com",
-      "password": "pass12",
       "accounts": [
         {
           "id": 1
