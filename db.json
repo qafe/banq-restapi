@@ -1,0 +1,75 @@
+{
+  "accounts": [
+    {
+      "id": 1,
+      "name": "BD Savings account",
+      "number": "NL22BANQ0102232698",
+      "balance": 1000
+    },
+    {
+      "id": 2,
+      "name": "GF Savings account",
+      "number": "NL22BANQ0102232698",
+      "balance": 800
+    },
+    {
+      "id": 3,
+      "name": "Koen's Account",
+      "number": "NL22BANQ0102232698",
+      "balance": 600
+    },
+    {
+      "name": "Blaat",
+      "id": 4
+    }
+  ],
+  "users": [
+    {
+      "id": 1,
+      "firstName": "Bram",
+      "lastName": "Dekker",
+      "emailaddress": "bdekker@qualogy.com",
+      "accounts": [
+        {
+          "id": 1
+        },
+        {
+          "id": 2
+        }
+      ]
+    },
+    {
+      "id": 2,
+      "firstName": "Koen",
+      "lastName": "Boes",
+      "emailaddress": "kboes@qualogy.com",
+      "password": "pass34",
+      "accounts": [
+        {
+          "id": 1,
+          "accountId": 3
+        },
+        {
+          "id": 2,
+          "accountId": 4
+        }
+      ]
+    }
+  ],
+  "transactions": [
+    {
+      "id": 1,
+      "amount": 100,
+      "fromAccount": 1,
+      "toAccount": 2
+    }
+  ],
+  "addressess": [
+    {
+      "id": 1,
+      "userId": 1,
+      "name": "Bram's rekening",
+      "number": "NL22BANQ0102232698"
+    }
+  ]
+}
