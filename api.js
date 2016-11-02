@@ -19,11 +19,11 @@ server.post('/login', function(req, res, next) {
 
     var user = router.db
         .get('users')
-        .find({"emailaddress": req.body.emailaddress})
+        .find({"emailaddress": req.body.emailaddress, "password": req.body.password})
         .value();
 
     if(!user) {
-        return res.sendStatus(401, "Could not find a user with the given emailaddress.");
+        return res.sendStatus(401, "Could not find a user with the given emailaddress and password.");
     }
 
     delete user.password;

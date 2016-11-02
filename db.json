@@ -29,6 +29,7 @@
       "firstName": "Bram",
       "lastName": "Dekker",
       "emailaddress": "bdekker@qualogy.com",
+      "password": "pass12",
       "accounts": [
         {
           "id": 1
