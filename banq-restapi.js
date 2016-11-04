@@ -1,12 +1,14 @@
-var jsonServer = require('json-server')
-var server = jsonServer.create()
-var router = jsonServer.router('db.json')
-var middlewares = jsonServer.defaults()
-var jwt = require('jsonwebtoken');
-
 var secret = 'banq';
 
-server.use(middlewares)
+var jsonServer = require('json-server'),
+    cors = require('cors'),
+    jwt = require('jsonwebtoken'),
+    server = jsonServer.create(),
+    router = jsonServer.router('db.json'),
+    middlewares = jsonServer.defaults();
+
+server.use(middlewares);
+server.use(cors());
 
 /* check all routes except for login for a token */
 // server.use(expressjwt({ "secret": secret}).unless({path: ['/login']}));
@@ -69,8 +71,6 @@ server.post('*', function(req, res, next) {
         .maxBy('id')
         .value();
 
-        console.log(address.id);
-
     req.body.id = address.id + 1;
 
     next();
@@ -123,12 +123,10 @@ server.post('/transactions', function(req, res, next) {
     accounts = Array.isArray(accounts) ? accounts : [accounts];
 
     var allowed = accounts.some(function(acc) {
-       console.log(acc.id, req.body.fromAccount);
         return acc.id == req.body.fromAccount;
     });
 
     if(!allowed) {
-        console.log('allowed');
         return res.sendStatus(403);
     }
 
@@ -160,8 +158,6 @@ server.post('/transactions', function(req, res, next) {
         .get('accounts')
         .find({"id": req.body.toAccount})
         .assign({ "balance": toBalance + amountToTransfer}).value();
-
-    console.log(fromAccount, toAccount);
 
     return next();
 });
