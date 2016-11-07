@@ -17,30 +17,26 @@
   ],
   "accounts": [
     {
-      "id": 1,
+      "id": "NL22BANQ0102232695",
       "name": "BD Savings account",
-      "number": "NL22BANQ0102232695",
       "balance": 1300,
       "userId": 1
     },
     {
-      "id": 2,
+      "id": "NL22BANQ0102232696",
       "name": "GF Savings account",
-      "number": "NL22BANQ0102232696",
       "balance": 1000,
       "userId": 1
     },
     {
-      "id": 3,
+      "id": "NL22BANQ0102232697",
       "name": "Koen's Account",
-      "number": "NL22BANQ0102232697",
       "balance": 700,
       "userId": 2
     },
     {
-      "id": 4,
+      "id": "NL22BANQ0102232698",
       "name": "Koen's second Account",
-      "number": "NL22BANQ0102232698",
       "balance": 1000,
       "userId": 2
     }
@@ -48,27 +44,39 @@
   "transactions": [
     {
       "id": 1,
-      "amount": 100,
-      "fromAccount": 1,
-      "toAccount": 2
+      "amount": 12,
+      "fromAccount": "NL22BANQ0102232695",
+      "toAccount": "NL22BANQ0102232696"
     },
     {
       "id": 2,
-      "amount": 100,
-      "fromAccount": 2,
-      "toAccount": 1
+      "amount": 34,
+      "fromAccount": "NL22BANQ0102232696",
+      "toAccount": "NL22BANQ0102232695"
     },
     {
       "id": 3,
-      "amount": 100,
-      "fromAccount": 3,
-      "toAccount": 1
+      "amount": 72,
+      "fromAccount": "NL22BANQ0102232696",
+      "toAccount": "NL22BANQ0102232698"
     },
     {
       "id": 4,
-      "amount": 100,
-      "fromAccount": 3,
-      "toAccount": 1
+      "amount": 64,
+      "fromAccount": "NL22BANQ0102232697",
+      "toAccount": "NL22BANQ0102232695"
+    },
+    {
+      "id": 5,
+      "amount": 32,
+      "fromAccount": "NL22BANQ0102232697",
+      "toAccount": "NL22BANQ0102232698"
+    },
+    {
+      "id": 6,
+      "amount": 42,
+      "fromAccount": "NL22BANQ0102232698",
+      "toAccount": "NL22BANQ0102232696"
     }
   ],
   "addressess": [

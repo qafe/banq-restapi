@@ -55,27 +55,18 @@ _**NOTE:** Below ORIGIN means any combination of protocol (http/https), host, an
 
     [
       {
-        "id": 1,
-        "userId": 2,
-        "name": "John's account",
-        "number": "NL22BANQ0102232697",
-        "balance": 1000
-        },
-        {
-          "id": 2,
-          "userId": 1,
-          "name": "Alice's account",
-          "number": "NL22BANQ0102232698",
-          "balance": 700
-        },
-        {
-          "id": 3,
-          "userId": 1,
-          "name": "Alice's second account",
-          "number": "NL22BANQ010223269",
-          "balance": 300
-        },
-        ...
+        "id": "NL22BANQ0102232698",
+        "userId": 1,
+        "name": "Alice's account",
+        "balance": 700
+      },
+      {
+        "id": "NL22BANQ010223269",
+        "userId": 1,
+        "name": "Alice's second account",
+        "balance": 300
+      },
+      ...
     ]
 
 ## Transactions
@@ -96,16 +87,50 @@ _**NOTE:** Below ORIGIN means any combination of protocol (http/https), host, an
       {
         "id": 1,
         "amount": 100,
-        "fromAccount": 1,
-        "toAccount": 2
+        "fromAccount": "NL22BANQ0102232697",
+        "toAccount": "NL22BANQ0102232698"
       },
       {
         "id": 2,
         "amount": 42,
-        "fromAccount": 3,
-        "toAccount": 2
+        "fromAccount": "NL22BANQ0102232698",
+        "toAccount": "NL22BANQ010223269"
       },
-        ...
+      {
+        "id": 3,
+        "amount": 71,
+        "fromAccount": "NL22BANQ0102232697",
+        "toAccount": "NL22BANQ010223269"
+      },
+      ...
+    ]
+
+### List Transactions involving specific account
+
+#### Request
+`GET ORIGIN/transactions?q=NL22BANQ0102232698`
+
+| Header        | Value |
+|---            |---    |
+| Authorization | Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjIsImlhdCI6MTQ3ODI2NTczMCwiZXhwIjoxNDc4MjY5MzMwfQ.p3TnF_OfebvafCSiD6XMNTMr9SF6nvv7APTInGukSrQ |
+
+#### Response
+`200 OK`
+
+    [
+      {
+        "id": 1,
+        "amount": 100,
+        "fromAccount": "NL22BANQ0102232697",
+        "toAccount": "NL22BANQ0102232698"
+      },
+      {
+        "id": 2,
+        "amount": 42,
+        "fromAccount": "NL22BANQ0102232698",
+        "toAccount": "NL22BANQ010223269"
+      },
+      ...
     ]
 
 ### Create Transaction
@@ -120,18 +145,18 @@ _**NOTE:** Below ORIGIN means any combination of protocol (http/https), host, an
 
     {
        "amount": 42,
-       "fromAccount": 3,
-       "toAccount": 2
+       "fromAccount": "NL22BANQ010223269",
+       "toAccount": "NL22BANQ0102232698"
     }
 
 #### Response
 `201 Created`
 
     {
-      "id": 2,
+      "id": 4,
       "amount": 42,
-      "fromAccount": 3,
-      "toAccount": 2
+      "fromAccount": "NL22BANQ010223269",
+      "toAccount": "NL22BANQ0102232698"
     }
 
 ## Adressess

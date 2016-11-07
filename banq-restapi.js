@@ -18,17 +18,21 @@ server.use('*', function(req, res, next) {
    var tokenHeader = req.headers.authorization
 
    if(!tokenHeader) {
-     res.send(400, 'Please specify authorization header.');
+     res.status(401)
+        .header('WWW-Authenticate', 'Bearer')
+        .send('Provide an Authorization header.');
    }
+
+   var authenticationScheme = tokenHeader.substring(0, 7);
    var token = tokenHeader.substring(7, tokenHeader.length);
 
-   if(!token) {
-     return res.send(401);
+   if('Bearer ' != authenticationScheme || !token) {
+     return res.status(403).send('Invalid authentication scheme or token.');
    }
 
-   jwt.verify(token, secret, function(err, decoded) {
-     if(err) {
-       return res.send(400, err);
+   jwt.verify(token, secret, function(error, decoded) {
+     if(error) {
+       return res.status(403).send(error);
      }
       req.userId = decoded.sub;
       next();
