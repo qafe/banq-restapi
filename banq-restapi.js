@@ -90,10 +90,10 @@ server.get('/users/:id', function(req, res, next) {
 });
 
 router.render = function (req, res) {
-  var userSpecificPaths = ['/accounts', '/addressess'];
-  if( userSpecificPaths.indexOf(req.originalUrl) > -1) {
-      var data = res.locals.data;
+  var data = res.locals.data;
 
+  var userSpecificPaths = ['/accounts', '/addressess'];
+  if(userSpecificPaths.indexOf(req.originalUrl) > -1) {
       if (Array.isArray(data)) {
         var accounts = data.filter(function(account) {
           return account.userId == req.userId;
@@ -106,7 +106,27 @@ router.render = function (req, res) {
       res.jsonp();
   }
 
-  res.jsonp(res.locals.data);
+  if('/transactions' == req.originalUrl) {
+    var accounts = router.db
+      .get('accounts')
+      .filter({"userId": req.userId})
+      .value();
+
+    accounts = Array.isArray(accounts) ? accounts : [accounts];
+
+    accountNumbers = accounts.map(function (account) {
+      return account.id;
+    });
+
+    var transactions = data.filter(function(transaction) {
+      return accountNumbers.indexOf(transaction.fromAccount) > -1
+        || accountNumbers.indexOf(transaction.toAccount) > -1;
+    });
+
+    res.jsonp(transactions);
+  }
+
+  res.jsonp(data);
 }
 
 /* fix account data when a new transaction is added */
@@ -164,5 +184,5 @@ server.post('/transactions', function(req, res, next) {
 
 server.use(router);
 server.listen(3000, function () {
-  console.log('JSON Server is running on port 3000')
+  console.log('Banking REST API for BanQ (mocked) is running on port 3000')
 })

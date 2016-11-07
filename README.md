@@ -1,4 +1,4 @@
-# Banking REST API for BANQ (mocked)
+# Banking REST API for BanQ (mocked)
 Mocked banking REST API for BanQ. It sends and receives dummy data described in `db.json`.
 
 The API uses:
@@ -11,7 +11,7 @@ The API uses:
     npm install
 
 # Run
-To start the Banking REST API for BANQ run:
+To start the Banking REST API for BanQ run:
 
     node banq-restapi.js
 

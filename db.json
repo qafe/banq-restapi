@@ -1,55 +1,4 @@
 {
-  "accounts": [
-    {
-      "id": 1,
-      "name": "BD Savings account",
-      "number": "NL22BANQ0102232698",
-      "balance": 1300,
-      "userId": 1
-    },
-    {
-      "id": 2,
-      "name": "GF Savings account",
-      "number": "NL22BANQ0102232698",
-      "balance": 1000,
-      "userId": 1
-    },
-    {
-      "id": 3,
-      "name": "Koen's Account",
-      "number": "NL22BANQ0102232698",
-      "balance": 700,
-      "userId": 2
-    },
-    {
-      "id": 4,
-      "name": "Koen's second Account",
-      "number": "NL22BANQ0102232698",
-      "balance": 1000,
-      "userId": 2
-    },
-    {
-      "name": "Koen's second Account",
-      "number": "NL22BANQ0102232698",
-      "balance": 1000,
-      "id": 5,
-      "userId": 2
-    },
-    {
-      "name": "Koen's second Account",
-      "number": "NL22BANQ0102232698",
-      "balance": 1000,
-      "id": 6,
-      "userId": 2
-    },
-    {
-      "name": "Koen's second Account",
-      "number": "NL22BANQ0102232698",
-      "balance": 1000,
-      "id": 7,
-      "userId": 2
-    }
-  ],
   "users": [
     {
       "id": 1,
@@ -66,6 +15,36 @@
       "emailaddress": "kboes@qualogy.com"
     }
   ],
+  "accounts": [
+    {
+      "id": 1,
+      "name": "BD Savings account",
+      "number": "NL22BANQ0102232695",
+      "balance": 1300,
+      "userId": 1
+    },
+    {
+      "id": 2,
+      "name": "GF Savings account",
+      "number": "NL22BANQ0102232696",
+      "balance": 1000,
+      "userId": 1
+    },
+    {
+      "id": 3,
+      "name": "Koen's Account",
+      "number": "NL22BANQ0102232697",
+      "balance": 700,
+      "userId": 2
+    },
+    {
+      "id": 4,
+      "name": "Koen's second Account",
+      "number": "NL22BANQ0102232698",
+      "balance": 1000,
+      "userId": 2
+    }
+  ],
   "transactions": [
     {
       "id": 1,
@@ -76,7 +55,7 @@
     {
       "id": 2,
       "amount": 100,
-      "fromAccount": 3,
+      "fromAccount": 2,
       "toAccount": 1
     },
     {
