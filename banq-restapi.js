@@ -110,7 +110,7 @@ router.render = function (req, res) {
       res.jsonp();
   }
 
-  if('/transactions' == req.originalUrl) {
+  if('/transactions' == req.originalUrl && Array.isArray(data)) {
     var accounts = router.db
       .get('accounts')
       .filter({"userId": req.userId})
@@ -154,7 +154,20 @@ server.post('/transactions', function(req, res, next) {
         return res.sendStatus(403);
     }
 
+    var hasToAccount = router.db
+      .get('accounts')
+      .find({"id": req.body.toAccount})
+      .value() != null;
+
+    if(!hasToAccount) {
+        return res.status(400).send('The toAccount does not exist.');
+    }
+
     var amountToTransfer = req.body.amount;
+
+    if (typeof(amountToTransfer) != 'number' || Number.isNaN(amountToTransfer)) {
+      return res.status(400).send('The amount has to be a number.');
+    }
 
     var from = router.db
         .get('accounts')
@@ -166,11 +179,10 @@ server.post('/transactions', function(req, res, next) {
         .get('accounts')
         .find({"id": req.body.toAccount})
         .value();
-
     var toBalance = to.balance;
 
     if(!toBalance && !fromBalance) {
-        return res.sendStatus(400);
+        return res.status(400).send('Account has no balance.');
     }
 
     var fromAccount = router.db

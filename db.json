@@ -46,37 +46,43 @@
       "id": 1,
       "amount": 12,
       "fromAccount": "NL22BANQ0102232695",
-      "toAccount": "NL22BANQ0102232696"
+      "toAccount": "NL22BANQ0102232696",
+      "message": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut congue pulvinar sapien fringilla porttitor. Mauris pretium venenatis bibendum. Praesent interdum tempor lectus ut iaculis. Morbi diam leo, tempor a odio quis, congue ornare mi. Nam et dui non eros efficitur."
     },
     {
       "id": 2,
       "amount": 34,
       "fromAccount": "NL22BANQ0102232696",
-      "toAccount": "NL22BANQ0102232695"
+      "toAccount": "NL22BANQ0102232695",
+      "message": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut congue pulvinar sapien fringilla porttitor. Mauris pretium venenatis bibendum. Praesent interdum tempor lectus ut iaculis. Morbi diam leo, tempor a odio quis, congue ornare mi. Nam et dui non eros efficitur."
     },
     {
       "id": 3,
       "amount": 72,
       "fromAccount": "NL22BANQ0102232696",
-      "toAccount": "NL22BANQ0102232698"
+      "toAccount": "NL22BANQ0102232698",
+      "message": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut congue pulvinar sapien fringilla porttitor. Mauris pretium venenatis bibendum. Praesent interdum tempor lectus ut iaculis. Morbi diam leo, tempor a odio quis, congue ornare mi. Nam et dui non eros efficitur."
     },
     {
       "id": 4,
       "amount": 64,
       "fromAccount": "NL22BANQ0102232697",
-      "toAccount": "NL22BANQ0102232695"
+      "toAccount": "NL22BANQ0102232695",
+      "message": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut congue pulvinar sapien fringilla porttitor. Mauris pretium venenatis bibendum. Praesent interdum tempor lectus ut iaculis. Morbi diam leo, tempor a odio quis, congue ornare mi. Nam et dui non eros efficitur."
     },
     {
       "id": 5,
       "amount": 32,
       "fromAccount": "NL22BANQ0102232697",
-      "toAccount": "NL22BANQ0102232698"
+      "toAccount": "NL22BANQ0102232698",
+      "message": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut congue pulvinar sapien fringilla porttitor. Mauris pretium venenatis bibendum. Praesent interdum tempor lectus ut iaculis. Morbi diam leo, tempor a odio quis, congue ornare mi. Nam et dui non eros efficitur."
     },
     {
       "id": 6,
       "amount": 42,
       "fromAccount": "NL22BANQ0102232698",
-      "toAccount": "NL22BANQ0102232696"
+      "toAccount": "NL22BANQ0102232696",
+      "message": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut congue pulvinar sapien fringilla porttitor. Mauris pretium venenatis bibendum. Praesent interdum tempor lectus ut iaculis. Morbi diam leo, tempor a odio quis, congue ornare mi. Nam et dui non eros efficitur."
     }
   ],
   "addressess": [

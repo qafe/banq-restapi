@@ -88,19 +88,22 @@ _**NOTE:** Below ORIGIN means any combination of protocol (http/https), host, an
         "id": 1,
         "amount": 100,
         "fromAccount": "NL22BANQ0102232697",
-        "toAccount": "NL22BANQ0102232698"
+        "toAccount": "NL22BANQ0102232698",
+        "message": "A short message/description."
       },
       {
         "id": 2,
         "amount": 42,
         "fromAccount": "NL22BANQ0102232698",
-        "toAccount": "NL22BANQ010223269"
+        "toAccount": "NL22BANQ010223269",
+        "message": "A short message/description."
       },
       {
         "id": 3,
         "amount": 71,
         "fromAccount": "NL22BANQ0102232697",
-        "toAccount": "NL22BANQ010223269"
+        "toAccount": "NL22BANQ010223269",
+        "message": "A short message/description."
       },
       ...
     ]
@@ -122,13 +125,15 @@ _**NOTE:** Below ORIGIN means any combination of protocol (http/https), host, an
         "id": 1,
         "amount": 100,
         "fromAccount": "NL22BANQ0102232697",
-        "toAccount": "NL22BANQ0102232698"
+        "toAccount": "NL22BANQ0102232698",
+        "message": "A short message/description."
       },
       {
         "id": 2,
         "amount": 42,
         "fromAccount": "NL22BANQ0102232698",
-        "toAccount": "NL22BANQ010223269"
+        "toAccount": "NL22BANQ010223269",
+        "message": "A short message/description."
       },
       ...
     ]
@@ -146,7 +151,8 @@ _**NOTE:** Below ORIGIN means any combination of protocol (http/https), host, an
     {
        "amount": 42,
        "fromAccount": "NL22BANQ010223269",
-       "toAccount": "NL22BANQ0102232698"
+       "toAccount": "NL22BANQ0102232698",
+       "message": "A short message/description."
     }
 
 #### Response
@@ -156,7 +162,8 @@ _**NOTE:** Below ORIGIN means any combination of protocol (http/https), host, an
       "id": 4,
       "amount": 42,
       "fromAccount": "NL22BANQ010223269",
-      "toAccount": "NL22BANQ0102232698"
+      "toAccount": "NL22BANQ0102232698",
+      "message": "A short message/description."
     }
 
 ## Adressess
