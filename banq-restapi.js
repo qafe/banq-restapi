@@ -1,11 +1,11 @@
 var secret = 'banq';
 
 var jsonServer = require('json-server'),
-    cors = require('cors'),
-    jwt = require('jsonwebtoken'),
-    server = jsonServer.create(),
-    router = jsonServer.router('db.json'),
-    middlewares = jsonServer.defaults();
+cors = require('cors'),
+jwt = require('jsonwebtoken'),
+server = jsonServer.create(),
+router = jsonServer.router('db.json'),
+middlewares = jsonServer.defaults();
 
 server.use(middlewares);
 server.use(cors());
@@ -13,108 +13,108 @@ server.use(cors());
 /* check all routes except for login for a token */
 // server.use(expressjwt({ "secret": secret}).unless({path: ['/login']}));
 server.use('*', function(req, res, next) {
-   if ( req.originalUrl == '/login') return next();
+  if (req.originalUrl == '/login' || req.originalUrl == '/login/') return next();
 
-   var tokenHeader = req.headers.authorization
+  var tokenHeader = req.headers.authorization
 
-   if(!tokenHeader) {
-     res.status(401)
-        .header('WWW-Authenticate', 'Bearer')
-        .send('Provide an Authorization header.');
-   }
+  if(!tokenHeader) {
+    return res.status(401)
+      .header('WWW-Authenticate', 'Bearer')
+      .send('Provide an Authorization header.');
+  }
 
-   var authenticationScheme = tokenHeader.substring(0, 7);
-   var token = tokenHeader.substring(7, tokenHeader.length);
+  var authenticationScheme = tokenHeader.substring(0, 7);
+  var token = tokenHeader.substring(7, tokenHeader.length);
 
-   if('Bearer ' != authenticationScheme || !token) {
-     return res.status(403).send('Invalid authentication scheme or token.');
-   }
+  if('Bearer ' != authenticationScheme || !token) {
+    return res.status(403).send('Invalid authentication scheme or token.');
+  }
 
-   jwt.verify(token, secret, function(error, decoded) {
-     if(error) {
-       return res.status(403).send(error);
-     }
-      req.userId = decoded.sub;
-      next();
-   });
+  jwt.verify(token, secret, function(error, decoded) {
+    if(error) {
+      return res.status(403).send(error);
+    }
+    req.userId = decoded.sub;
+    next();
+  });
 });
 
 server.post('/login', function(req, res, next) {
-    if(!req.body.emailaddress || !req.body.password) {
-        return res.send(400);
-    }
+  if(!req.body.emailaddress || !req.body.password) {
+    return res.send(400);
+  }
 
-    var user = router.db
-        .get('users')
-        .find({"emailaddress": req.body.emailaddress, "password": req.body.password})
-        .value();
+  var user = router.db
+    .get('users')
+    .find({"emailaddress": req.body.emailaddress, "password": req.body.password})
+    .value();
 
-    if(!user) {
-        return res.sendStatus(401, "Could not find a user with the given emailaddress and password.");
-    }
+  if(!user) {
+    return res.status(403).send("Could not find a user with the given emailaddress and password.");
+  }
 
-    // delete user.password;
+  var payload = {};
+  payload.sub = user.id;
 
-    var payload = {};
-    payload.sub = user.id;
+  var token = jwt.sign(payload , secret, { expiresIn: 60 * 60 });
 
-    var token = jwt.sign(payload , secret, { expiresIn: 60 * 60 });
-
-    return res.send({"token": token});
+  return res.send({"token": token});
 });
 
 server.post('*', function(req, res, next) {
-    var path = req.originalUrl;
+  var path = req.originalUrl;
 
-    if ( path == '/login') return next();
+  if ( path == '/login' || path == '/login/') return next();
 
-    var resource = path.substring(1, path.length);
+  var endIndex = path.endsWith('/') ? path.length - 1 : path.length;
+  var resource = path.substring(1, endIndex);
 
-    var address = router.db
-        .get(resource)
-        .maxBy('id')
-        .value();
+  var address = router.db
+  .get(resource)
+  .maxBy('id')
+  .value();
 
-    req.body.id = address.id + 1;
+  req.body.id = address.id + 1;
 
-    next();
+  next();
 });
 
-server.post(/^\/(accounts|addressess)/, function(req, res, next) {
-    req.body.userId = req.userId;
-    next();
+server.post(/^\/(accounts|addresses)/, function(req, res, next) {
+  req.body.userId = req.userId;
+  next();
 });
 
 /* do extra check to not access other user's details */
 server.get('/users/:id', function(req, res, next) {
-    if(!req.userId != req.params.id) {
-        return res.sendStatus(401);
-    }
-    return next();
+  if(!req.userId != req.params.id) {
+    return res.sendStatus(401);
+  }
+  return next();
 });
 
 router.render = function (req, res) {
   var data = res.locals.data;
 
-  var userSpecificPaths = ['/accounts', '/addressess'];
+  var userSpecificPaths = ['/accounts', '/accounts/', '/addresses', '/addresses/'];
   if(userSpecificPaths.indexOf(req.originalUrl) > -1) {
-      if (Array.isArray(data)) {
-        var accounts = data.filter(function(account) {
-          return account.userId == req.userId;
-        });
-        res.jsonp(accounts);
-      } else if (data.userId == req.userId) {
-        res.jsonp(data);
-      }
+    if (Array.isArray(data)) {
+      var accounts = data.filter(function(account) {
+        return account.userId == req.userId;
+      });
+      res.jsonp(accounts);
+    } else if (data.userId == req.userId) {
+      res.jsonp(data);
+    }
 
-      res.jsonp();
+    res.jsonp();
   }
 
-  if('/transactions' == req.originalUrl && Array.isArray(data)) {
+  var accountSpecificPaths = ['/transactions', '/transactions/'];
+  if(accountSpecificPaths.indexOf(req.originalUrl) > -1 && Array.isArray(data)) {
     var accounts = router.db
-      .get('accounts')
-      .filter({"userId": req.userId})
-      .value();
+    .get('accounts')
+    .filter({"userId": req.userId})
+    .value();
 
     accounts = Array.isArray(accounts) ? accounts : [accounts];
 
@@ -124,7 +124,7 @@ router.render = function (req, res) {
 
     var transactions = data.filter(function(transaction) {
       return accountNumbers.indexOf(transaction.fromAccount) > -1
-        || accountNumbers.indexOf(transaction.toAccount) > -1;
+      || accountNumbers.indexOf(transaction.toAccount) > -1;
     });
 
     res.jsonp(transactions);
@@ -135,67 +135,67 @@ router.render = function (req, res) {
 
 /* fix account data when a new transaction is added */
 server.post('/transactions', function(req, res, next) {
-    if(!req.body.fromAccount && !req.body.toAccount) {
-        return res.sendStatus(400);
-    }
+  if(!req.body.fromAccount && !req.body.toAccount) {
+    return res.sendStatus(400);
+  }
 
-    var accounts = router.db
-      .get('accounts')
-      .filter({"userId": req.userId})
-      .value();
+  var accounts = router.db
+  .get('accounts')
+  .filter({"userId": req.userId})
+  .value();
 
-    accounts = Array.isArray(accounts) ? accounts : [accounts];
+  accounts = Array.isArray(accounts) ? accounts : [accounts];
 
-    var allowed = accounts.some(function(acc) {
-        return acc.id == req.body.fromAccount;
-    });
+  var allowed = accounts.some(function(acc) {
+    return acc.id == req.body.fromAccount;
+  });
 
-    if(!allowed) {
-        return res.sendStatus(403);
-    }
+  if(!allowed) {
+    return res.sendStatus(403);
+  }
 
-    var hasToAccount = router.db
-      .get('accounts')
-      .find({"id": req.body.toAccount})
-      .value() != null;
+  var hasToAccount = router.db
+  .get('accounts')
+  .find({"id": req.body.toAccount})
+  .value() != null;
 
-    if(!hasToAccount) {
-        return res.status(400).send('The toAccount does not exist.');
-    }
+  if(!hasToAccount) {
+    return res.status(400).send('The toAccount does not exist.');
+  }
 
-    var amountToTransfer = req.body.amount;
+  var amountToTransfer = req.body.amount;
 
-    if (typeof(amountToTransfer) != 'number' || Number.isNaN(amountToTransfer)) {
-      return res.status(400).send('The amount has to be a number.');
-    }
+  if (typeof(amountToTransfer) != 'number' || Number.isNaN(amountToTransfer)) {
+    return res.status(400).send('The amount has to be a number.');
+  }
 
-    var from = router.db
-        .get('accounts')
-        .find({"id": req.body.fromAccount})
-        .value();
-    var fromBalance = from.balance;
+  var from = router.db
+  .get('accounts')
+  .find({"id": req.body.fromAccount})
+  .value();
+  var fromBalance = from.balance;
 
-    var to = router.db
-        .get('accounts')
-        .find({"id": req.body.toAccount})
-        .value();
-    var toBalance = to.balance;
+  var to = router.db
+  .get('accounts')
+  .find({"id": req.body.toAccount})
+  .value();
+  var toBalance = to.balance;
 
-    if(!toBalance && !fromBalance) {
-        return res.status(400).send('Account has no balance.');
-    }
+  if(!toBalance && !fromBalance) {
+    return res.status(400).send('Account has no balance.');
+  }
 
-    var fromAccount = router.db
-        .get('accounts')
-        .find({"id": req.body.fromAccount})
-        .assign({ "balance": fromBalance - amountToTransfer}).value();
+  var fromAccount = router.db
+  .get('accounts')
+  .find({"id": req.body.fromAccount})
+  .assign({ "balance": fromBalance - amountToTransfer}).value();
 
-    var toAccount = router.db
-        .get('accounts')
-        .find({"id": req.body.toAccount})
-        .assign({ "balance": toBalance + amountToTransfer}).value();
+  var toAccount = router.db
+  .get('accounts')
+  .find({"id": req.body.toAccount})
+  .assign({ "balance": toBalance + amountToTransfer}).value();
 
-    return next();
+  return next();
 });
 
 server.use(router);

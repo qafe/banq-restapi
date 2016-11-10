@@ -85,12 +85,12 @@
       "message": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut congue pulvinar sapien fringilla porttitor. Mauris pretium venenatis bibendum. Praesent interdum tempor lectus ut iaculis. Morbi diam leo, tempor a odio quis, congue ornare mi. Nam et dui non eros efficitur."
     }
   ],
-  "addressess": [
+  "addresses": [
     {
       "id": 1,
       "userId": 1,
       "name": "Bram's rekening",
-      "number": "NL22BANQ0102232698"
+      "number": "NL22BANQ0102232696"
     },
     {
       "name": "Koen's rekening",
@@ -100,38 +100,14 @@
     },
     {
       "name": "Koen's rekening",
-      "number": "NL22BANQ0102232698",
-      "userId": 2,
+      "number": "NL22BANQ0102232697",
+      "userId": 1,
       "id": 3
     },
     {
-      "name": "Koen's rekening",
-      "number": "NL22BANQ0102232698",
+      "name": "Bram's Account",
+      "number": "NL22BANQ0102232695",
       "id": 4,
-      "userId": 2
-    },
-    {
-      "name": "Koen's rekening",
-      "number": "NL22BANQ0102232698",
-      "id": 5,
-      "userId": 2
-    },
-    {
-      "name": "Koen's rekening",
-      "number": "NL22BANQ0102232698",
-      "id": 6,
-      "userId": 2
-    },
-    {
-      "name": "Koen's rekening",
-      "number": "NL22BANQ0102232698",
-      "id": 7,
-      "userId": 2
-    },
-    {
-      "name": "Koen's rekening",
-      "number": "NL22BANQ0102232698",
-      "id": 8,
       "userId": 2
     }
   ]
