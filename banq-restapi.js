@@ -18,21 +18,22 @@ server.use('*', function(req, res, next) {
   var tokenHeader = req.headers.authorization
 
   if(!tokenHeader) {
-    return res.status(401)
-      .header('WWW-Authenticate', 'Bearer')
-      .send('Provide an Authorization header.');
+    var error = {};
+    error.message = 'Provide an Authorization header.';
+
+    return res.status(401).header('WWW-Authenticate', 'Bearer').send(error);
   }
 
   var authenticationScheme = tokenHeader.substring(0, 7);
   var token = tokenHeader.substring(7, tokenHeader.length);
 
   if('Bearer ' != authenticationScheme || !token) {
-    return res.status(403).send('Invalid authentication scheme or token.');
+    return sendErrorMessage(res, 'Invalid authentication scheme or token.', 403);
   }
 
   jwt.verify(token, secret, function(error, decoded) {
     if(error) {
-      return res.status(403).send(error);
+      return sendErrorMessage(res, error.message, 403);
     }
     req.userId = decoded.sub;
     next();
@@ -41,7 +42,7 @@ server.use('*', function(req, res, next) {
 
 server.post('/login', function(req, res, next) {
   if(!req.body.emailaddress || !req.body.password) {
-    return res.send(400);
+    return sendErrorMessage(res, 'The emailaddress or password is missing.');
   }
 
   var user = router.db
@@ -50,7 +51,7 @@ server.post('/login', function(req, res, next) {
     .value();
 
   if(!user) {
-    return res.status(403).send("Could not find a user with the given emailaddress and password.");
+    return sendErrorMessage(res, 'Could not find a user with the given emailaddress and password.', 403);
   }
 
   var payload = {};
@@ -135,8 +136,16 @@ router.render = function (req, res) {
 
 /* fix account data when a new transaction is added */
 server.post('/transactions', function(req, res, next) {
-  if(!req.body.fromAccount && !req.body.toAccount) {
-    return res.sendStatus(400);
+  if(!req.body.fromAccount) {
+    return sendErrorMessage(res, 'The fromAccount is not specified.');
+  }
+
+  if(!req.body.toAccount) {
+    return sendErrorMessage(res, 'The toAccount is not specified.');
+  }
+
+  if(req.body.toAccount == req.body.fromAccount) {
+    return sendErrorMessage(res, 'The toAccount must not be equal to the fromAccount.');
   }
 
   var accounts = router.db
@@ -146,8 +155,8 @@ server.post('/transactions', function(req, res, next) {
 
   accounts = Array.isArray(accounts) ? accounts : [accounts];
 
-  var allowed = accounts.some(function(acc) {
-    return acc.id == req.body.fromAccount;
+  var allowed = accounts.some(function(account) {
+    return account.id == req.body.fromAccount;
   });
 
   if(!allowed) {
@@ -160,13 +169,13 @@ server.post('/transactions', function(req, res, next) {
   .value() != null;
 
   if(!hasToAccount) {
-    return res.status(400).send('The toAccount does not exist.');
+    return sendErrorMessage(res, 'The toAccount does not exist.');
   }
 
   var amountToTransfer = req.body.amount;
 
-  if (typeof(amountToTransfer) != 'number' || Number.isNaN(amountToTransfer)) {
-    return res.status(400).send('The amount has to be a number.');
+  if (typeof(amountToTransfer) != 'number' || Number.isNaN(amountToTransfer) || amountToTransfer <= 0) {
+    return sendErrorMessage(res, 'The amount has to be a number and greater then 0.');
   }
 
   var from = router.db
@@ -182,7 +191,7 @@ server.post('/transactions', function(req, res, next) {
   var toBalance = to.balance;
 
   if(!toBalance && !fromBalance) {
-    return res.status(400).send('Account has no balance.');
+    return sendErrorMessage(res, 'Account has no balance.');
   }
 
   var fromAccount = router.db
@@ -201,4 +210,13 @@ server.post('/transactions', function(req, res, next) {
 server.use(router);
 server.listen(3000, function () {
   console.log('Banking REST API for BanQ (mocked) is running on port 3000')
-})
+});
+
+function sendErrorMessage(response, message, status) {
+  status = status ? status : 400;
+
+  var error = {};
+  error.message = message;
+
+  return response.status(status).send(error);
+}
