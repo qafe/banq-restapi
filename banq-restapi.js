@@ -13,6 +13,11 @@ server.use(cors());
 /* check all routes except for login for a token */
 // server.use(expressjwt({ "secret": secret}).unless({path: ['/login']}));
 server.use('*', function(req, res, next) {
+  if(req.query.q === '') {
+    console.log('FOO');
+    return sendErrorMessage(res, "Empty query param q is not allowed", 400);
+  }
+
   if (req.originalUrl == '/login' || req.originalUrl == '/login/') return next();
 
   var tokenHeader = req.headers.authorization
@@ -80,9 +85,13 @@ server.post('*', function(req, res, next) {
   next();
 });
 
-server.post(/^\/(accounts|addresses)/, function(req, res, next) {
+server.post(/^\/(addresses)/, function(req, res, next) {
   req.body.userId = req.userId;
   next();
+});
+
+server.post('/accounts', function(req, res, next) {
+  return sendErrorMessage(res, 'No such resource.', 404);
 });
 
 /* do extra check to not access other user's details */
@@ -102,12 +111,12 @@ router.render = function (req, res) {
       var accounts = data.filter(function(account) {
         return account.userId == req.userId;
       });
-      res.jsonp(accounts);
+      return res.jsonp(accounts);
     } else if (data.userId == req.userId) {
-      res.jsonp(data);
+      return res.jsonp(data);
     }
 
-    res.jsonp();
+    return res.jsonp();
   }
 
   var accountSpecificPaths = ['/transactions', '/transactions/'];
@@ -128,10 +137,10 @@ router.render = function (req, res) {
       || accountNumbers.indexOf(transaction.toAccount) > -1;
     });
 
-    res.jsonp(transactions);
+    return res.jsonp(transactions);
   }
 
-  res.jsonp(data);
+  return res.jsonp(data);
 }
 
 /* fix account data when a new transaction is added */
